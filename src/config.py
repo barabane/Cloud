@@ -17,6 +17,10 @@ class Settings(CustomBaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PORT: int
 
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+
     DATABASE_URL: PostgresDsn | None = None
 
     def __init__(self, **kwargs):

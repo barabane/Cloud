@@ -6,10 +6,9 @@ from sqlalchemy.dialects.postgresql import FLOAT, TIMESTAMP, UUID, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.database import Base
-from src.database.models import BaseModel
 
 
-class File(BaseModel, Base):
+class File(Base):
     __tablename__ = 'files'
 
     id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True, default=uuid.uuid4)

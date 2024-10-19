@@ -1,17 +1,21 @@
 import abc
 import uuid
 
-from sqlalchemy import delete
+from sqlalchemy import delete, insert
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.database.models import BaseModel
 
 
 class BaseRepository(abc.ABC):
-    model: BaseModel = None
+    model = None
 
     async def get_by_id(self, entity_id: str, session: AsyncSession):
         return await session.get(self.model, uuid.UUID(entity_id))
+
+    async def add(self, data, session: AsyncSession):
+        res = await session.execute(
+            insert(self.model).values(**data).returning(self.model)
+        )
+        return res.scalar()
 
     async def delete_by_id(self, entity_id: str, session: AsyncSession):
         return await session.execute(

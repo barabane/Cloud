@@ -12,6 +12,9 @@ class BaseService(abc.ABC):
     async def get_by_id(self, entity_id: str, session: AsyncSession):
         return await self.repository.get_by_id(entity_id=entity_id, session=session)
 
+    async def add(self, data, session: AsyncSession):
+        return await self.repository.add(data, session)
+
     async def delete_by_id(self, entity_id: str, session: AsyncSession):
         return await self.repository.delete_by_id(entity_id=entity_id, session=session)
 
