@@ -2,9 +2,10 @@ from sqlalchemy.dialects.postgresql import INTEGER, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.database import Base
+from src.database.models import BaseModel
 
 
-class Subscription(Base):
+class Subscription(BaseModel, Base):
     __tablename__ = 'subscriptions'
 
     id: Mapped[int] = mapped_column(INTEGER, primary_key=True, default=1)

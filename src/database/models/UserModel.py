@@ -5,9 +5,10 @@ from sqlalchemy.dialects.postgresql import UUID, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.database import Base
+from src.database.models import BaseModel
 
 
-class User(Base):
+class User(BaseModel, Base):
     __tablename__ = 'users'
 
     id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True, default=uuid.uuid4)
