@@ -1,4 +1,6 @@
+import os
 from contextlib import asynccontextmanager
+from uuid import UUID
 
 from aiobotocore.session import AioSession, get_session
 from fastapi import UploadFile
@@ -29,16 +31,21 @@ class S3:
         async with self.session.create_client('s3', **self.config) as client:
             yield client
 
-    async def upload_file(self, file_id: str, file: UploadFile) -> str:
+    async def upload_file(self, file_id: UUID, file: UploadFile) -> str:
         async with self.get_client() as client:
+            extension = os.path.splitext(file.filename)[1]
             await client.put_object(
-                Bucket=self.bucket_name, Key=str(file_id), Body=file.file
+                Bucket=self.bucket_name, Key=f'{file_id}{extension}', Body=file.file
             )
-            return self.get_file_link(str(file_id))
+            return self.get_file_link(f'{file_id}{extension}')
 
-    async def delete_file(self, object_name: str) -> None:
+    async def update_file(self, file_id: UUID, new_file: UploadFile) -> str:
+        await self.delete_file(str(file_id))
+        return await self.upload_file(file_id, new_file)
+
+    async def delete_file(self, file_id: UUID) -> None:
         async with self.get_client() as client:
-            await client.delete_object(Bucket=self.bucket_name, Key=object_name)
+            await client.delete_object(Bucket=self.bucket_name, Key=str(file_id))
 
     def get_file_link(self, file_id: str) -> str:
         return f"{self.config['endpoint_url']}{self.bucket_name}/{file_id}"
