@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.middlewares import AuthMiddleware
 from src.routes.FileRouter import file_router
@@ -13,6 +14,14 @@ async def lifespan(_):
 
 
 app = FastAPI(title='Fast API', lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 
 app.add_middleware(AuthMiddleware, prefixes=[file_router.prefix])
 
