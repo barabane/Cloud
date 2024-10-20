@@ -23,7 +23,7 @@ async def register_user(
     )
 
     response.set_cookie(
-        'Authorization', token, secure=True, httponly=True, samesite='strict'
+        'auth_token', token, secure=True, httponly=True, samesite='strict'
     )
 
     return user
@@ -43,7 +43,13 @@ async def login_user(
     )
 
     response.set_cookie(
-        'Authorization', token, secure=True, httponly=True, samesite='strict'
+        'auth_token', token, secure=True, httponly=True, samesite='strict'
     )
 
     return user
+
+
+@user_router.post('/logout')
+async def logout_user(response: Response):
+    response.delete_cookie('auth_token')
+    return True

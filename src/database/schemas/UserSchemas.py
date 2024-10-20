@@ -16,9 +16,9 @@ class SUserUpdate(BaseModel):
 
 
 class SUserResponse(BaseModel):
-    id: UUID
+    id: UUID | str
     email: EmailStr
-    subscription_id: int
+    subscription_id: Optional[int] = None
 
 
 class SUserAuth(BaseModel):

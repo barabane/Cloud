@@ -43,7 +43,16 @@ class TokenNotFoundException(DefaultException):
     def __init__(
         self,
         status_code: int = status.HTTP_404_NOT_FOUND,
-        detail: Any = 'X-Auth-Token не найден',
+        detail: Any = 'Auth token не найден',
+    ):
+        super().__init__(status_code, detail)
+
+
+class TokenExpiredException(DefaultException):
+    def __init__(
+        self,
+        status_code: int = status.HTTP_401_UNAUTHORIZED,
+        detail: Any = 'Auth token истек',
     ):
         super().__init__(status_code, detail)
 
@@ -52,6 +61,6 @@ class InvalidTokenException(DefaultException):
     def __init__(
         self,
         status_code: int = status.HTTP_401_UNAUTHORIZED,
-        detail: Any = 'Не валидный X-Auth-Token',
+        detail: Any = 'Не валидный Auth token',
     ):
         super().__init__(status_code, detail)
