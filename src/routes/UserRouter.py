@@ -42,9 +42,7 @@ async def login_user(
         payload={'sub': str(user.id), 'email': user.email}
     )
 
-    response.set_cookie(
-        'auth_token', token, secure=True, httponly=True, samesite='strict'
-    )
+    response.set_cookie('auth_token', token, httponly=True, samesite='strict')
 
     return user
 

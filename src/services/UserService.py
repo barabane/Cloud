@@ -3,7 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models.UserModel import User
 from src.database.schemas.UserSchemas import SUserAuth, SUserResponse
-from src.exceptions import UserAlreadyExistsException, UserBadCredentialsException
+from src.exceptions import (
+    UserAlreadyExistsException,
+    UserBadCredentialsException,
+    UserDoesNotExistsException,
+)
 from src.repositories.UserRepository import UserRepository, get_user_repository
 from src.services.BaseService import BaseService
 
@@ -40,7 +44,7 @@ class UserService(BaseService):
         )
 
         if not user:
-            raise UserAlreadyExistsException(
+            raise UserDoesNotExistsException(
                 detail='Пользователь с таким email не найден'
             )
         is_verified: bool = self.__check_pwd_hash(

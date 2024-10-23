@@ -17,11 +17,19 @@ class Settings(CustomBaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PORT: int
 
+    TEST_POSTGRES_NAME: str
+    TEST_POSTGRES_PASS: str
+    TEST_POSTGRES_USER: str
+    TEST_POSTGRES_HOST: str
+    TEST_POSTGRES_PORT: int
+
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     DATABASE_URL: PostgresDsn | None = None
+    TEST_DATABASE_URL: PostgresDsn | None = None
+    TEST_API_URL_ADDRESS: str = 'http://127.0.0.1:8000/'
 
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
@@ -40,6 +48,16 @@ class Settings(CustomBaseSettings):
                 host=self.POSTGRES_HOST,
                 port=self.POSTGRES_PORT,
                 path=self.POSTGRES_NAME,
+            )
+
+        if not self.TEST_DATABASE_URL:
+            self.TEST_DATABASE_URL = PostgresDsn.build(
+                scheme='postgresql+asyncpg',
+                username=self.TEST_POSTGRES_USER,
+                password=self.TEST_POSTGRES_PASS,
+                host=self.TEST_POSTGRES_HOST,
+                port=self.TEST_POSTGRES_PORT,
+                path=self.TEST_POSTGRES_NAME,
             )
 
 

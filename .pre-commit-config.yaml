@@ -14,3 +14,10 @@ repos:
         language: python
         types: [python]
         additional_dependencies: [ruff]
+  - repo: local
+    hooks:
+      - id: run-tests
+        name: Run Tests
+        entry: pytest tests/ --maxfail=1 --disable-warnings
+        language: system
+        types: [python]

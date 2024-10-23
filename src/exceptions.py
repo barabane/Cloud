@@ -24,7 +24,7 @@ class UserAlreadyExistsException(DefaultException):
 class UserDoesNotExistsException(DefaultException):
     def __init__(
         self,
-        status_code: int = status.HTTP_409_CONFLICT,
+        status_code: int = status.HTTP_404_NOT_FOUND,
         detail: Any = 'Пользователь не найден',
     ):
         super().__init__(status_code, detail)

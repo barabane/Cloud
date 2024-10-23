@@ -10,7 +10,12 @@ class Base(DeclarativeBase):
     pass
 
 
-engine = create_async_engine(url=str(settings.DATABASE_URL))
+DB_URL = settings.DATABASE_URL
+
+if settings.MODE == 'TEST':
+    DB_URL = settings.TEST_DATABASE_URL
+
+engine = create_async_engine(url=str(DB_URL))
 async_session_maker = sessionmaker(
     bind=engine, class_=AsyncSession, autoflush=False, expire_on_commit=False
 )
